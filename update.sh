@@ -83,7 +83,15 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Extracting update..."
-unzip -q "$TEMP_DIR/update.zip" -d "$TEMP_DIR/extracted"
+unzip -q "$TEMP_DIR/update.zip" -d "$TEMP_DIR/raw"
+
+# Strip top-level directory if the zip contains one (e.g. StarMade/)
+INNER_DIR="$TEMP_DIR/raw"
+ENTRIES=("$INNER_DIR"/*)
+if [ ${#ENTRIES[@]} -eq 1 ] && [ -d "${ENTRIES[0]}" ]; then
+    INNER_DIR="${ENTRIES[0]}"
+fi
+mv "$INNER_DIR" "$TEMP_DIR/extracted" 2>/dev/null || true
 
 echo "[5/6] Applying update (respecting exclusions)..."
 if [ -f "$EXCLUDES_FILE" ]; then

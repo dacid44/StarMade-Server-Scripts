@@ -54,7 +54,17 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "[2/3] Extracting to $STARMADE_DIR..."
-unzip -qo "$TEMP_DIR/starmade.zip" -d "$STARMADE_DIR"
+unzip -qo "$TEMP_DIR/starmade.zip" -d "$TEMP_DIR/extracted"
+
+# The zip may contain a top-level directory (e.g. StarMade/). If so, move its
+# contents up so files land directly in STARMADE_DIR instead of a subfolder.
+INNER_DIR="$TEMP_DIR/extracted"
+ENTRIES=("$INNER_DIR"/*)
+if [ ${#ENTRIES[@]} -eq 1 ] && [ -d "${ENTRIES[0]}" ]; then
+    INNER_DIR="${ENTRIES[0]}"
+fi
+
+rsync -a "$INNER_DIR/" "$STARMADE_DIR/"
 rm -rf "$TEMP_DIR"
 
 echo "$BRANCH" > "$STARMADE_DIR/.current_branch"
