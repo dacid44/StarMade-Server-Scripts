@@ -147,20 +147,34 @@ echo ""
 if [ "$SETUP_METHOD" == "1" ]; then
 
     if ! command -v docker &>/dev/null; then
-        if [[ "$(uname -s)" == "Linux" ]]; then
+        # On macOS, Docker Desktop may be installed but not running (CLI symlinks
+        # are only created once Docker Desktop starts for the first time).
+        if [[ "$(uname -s)" == "Darwin" ]] && [ -d "/Applications/Docker.app" ]; then
+            info "Docker Desktop is installed but the CLI is not in PATH. Starting Docker Desktop..."
+            open -a Docker
+            echo ""
+            info "Waiting for Docker to start (this can take a minute)..."
+            while ! command -v docker &>/dev/null || ! docker info &>/dev/null 2>&1; do
+                sleep 2
+            done
+            success "Docker Desktop is running"
+        elif [[ "$(uname -s)" == "Darwin" ]] && command -v brew &>/dev/null; then
+            info "Docker not found — installing Docker Desktop via Homebrew..."
+            brew install --cask docker
+            info "Starting Docker Desktop..."
+            open -a Docker
+            info "Waiting for Docker to start (this can take a minute)..."
+            while ! command -v docker &>/dev/null || ! docker info &>/dev/null 2>&1; do
+                sleep 2
+            done
+            success "Docker Desktop is running"
+        elif [[ "$(uname -s)" == "Linux" ]]; then
             info "Docker not found — installing Docker Engine..."
             curl -fsSL https://get.docker.com | sudo sh
             sudo usermod -aG docker "$(whoami)"
             info "Docker installed. You may need to log out and back in for group membership to take effect."
             info "Starting Docker service..."
             sudo systemctl enable --now docker
-        elif [[ "$(uname -s)" == "Darwin" ]] && command -v brew &>/dev/null; then
-            info "Docker not found — installing Docker Desktop via Homebrew..."
-            brew install --cask docker
-            info "Opening Docker Desktop — wait for it to finish starting before continuing."
-            open -a Docker
-            echo ""
-            read -rp "  Press Enter once Docker Desktop is running... "
         else
             error "Docker is not installed. Install Docker Desktop from https://www.docker.com/products/docker-desktop/ then re-run this installer."
         fi
