@@ -224,7 +224,7 @@ if [ "$SETUP_METHOD" == "1" ]; then
         fi
     fi
 
-    prompt UPDATE_BRANCH "Update branch (release / dev / pre)" "dev"
+    prompt UPDATE_BRANCH "Update branch (release / dev / pre)" "release"
     prompt JVM_MIN_HEAP  "JVM minimum heap (e.g. 4g)"          "4g"
     prompt JVM_MAX_HEAP  "JVM maximum heap (e.g. 8g)"          "8g"
     prompt SERVER_PORT   "Host port to expose"                  "4242"
@@ -365,7 +365,7 @@ prompt BACKUP_DIR        "Backup directory"                    "$STARMADE_DIR/ba
 prompt LOG_DIR           "Log directory"                       "$STARMADE_DIR/logs"
 prompt SYSTEMCTL_SERVICE "systemd service name"                "starmade"
 prompt MAX_BACKUPS       "Number of backups to keep"           "3"
-prompt UPDATE_BRANCH     "Update branch (release / dev / pre)" "dev"
+prompt UPDATE_BRANCH     "Update branch (release / dev / pre)" "release"
 prompt JVM_MIN_HEAP      "JVM minimum heap (e.g. 4g)"          "4g"
 prompt JVM_MAX_HEAP      "JVM maximum heap (e.g. 8g)"          "8g"
 
