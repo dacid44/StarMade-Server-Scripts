@@ -1,0 +1,20 @@
+services:
+  starmade:
+    build:
+      context: .
+      args:
+        JAVA_VERSION: ${JAVA_VERSION:-8}
+    image: starmade-server
+    container_name: starmade
+    ports:
+      - "${SERVER_PORT:-4242}:4242/tcp"
+      - "${SERVER_PORT:-4242}:4242/udp"
+    volumes:
+      - ${STARMADE_DIR:-./server-data}:/starmade
+    environment:
+      - JVM_MIN_HEAP=${JVM_MIN_HEAP:-4g}
+      - JVM_MAX_HEAP=${JVM_MAX_HEAP:-8g}
+      - JVM_EXTRA_ARGS=${JVM_EXTRA_ARGS:-}
+    restart: unless-stopped
+    # Give the server time to save and shut down gracefully on stop/restart
+    stop_grace_period: 30s

@@ -1,0 +1,45 @@
+# update-excludes.txt — files to preserve when running update.sh
+#
+# Copy this file to your STARMADE_DIR as "update-excludes.txt" and uncomment
+# the lines relevant to your server. Paths are relative to STARMADE_DIR.
+#
+# How it works: before applying the update, each listed file is copied out of
+# your current installation and back over the freshly extracted build. This
+# means your customized version wins instead of the default from the update.
+#
+# Note: If a StarMade update adds new config entries to any of the preserved files, you
+# will need to add those entries manually after the update. The update script does not merge
+# new entries into your preserved files, it only copies your existing file over the new one.
+# Always check the update notes for any changes to config files and apply them to your preserved
+# versions if necessary.
+#
+# !! IMPORTANT FOR MODDED SERVERS !!
+# Block IDs in StarMade are defined locally through StarMade/data/config/BlockTypes.properties.
+# If an update overwrites your block types config, every custom block in your world
+# will lose its ID mapping and may be replaced by a different block type or become
+# invisible. If you have a modded server, make sure to preserve your BlockTypes.properties
+# file (BlockConfig.xml not needed as it only contains properties for each block ID) and
+# any other custom config files you have.
+
+# ------------------------------------------------------------
+# Server settings
+# ------------------------------------------------------------
+
+# Main server configuration (port, max players, name, etc.)
+server.cfg
+
+# Admin, ban, and whitelist files
+# admins.txt
+# bannedIps.txt
+# bannedPlayers.txt
+# whitelist.txt
+
+# ------------------------------------------------------------
+# Block configuration — CRITICAL for modded servers
+# ------------------------------------------------------------
+# These files define block IDs. Overwriting them with vanilla defaults will
+# corrupt any world that contains custom or modded blocks.
+
+# Master block type registry — maps block names to numeric IDs, you should
+# preserve this if you have modded blocks
+# data/config/BlockTypes.properties
