@@ -67,11 +67,6 @@ echo "  Branch:       $BRANCH"
 if [ -f "$STARMADE_DIR/StarMade.jar" ]; then
     SIZE=$(du -sh "$STARMADE_DIR" | cut -f1)
     echo "  Size:         $SIZE"
-    echo ""
-    read -rp "Start the server now? (y/n): " START_NOW
-    if [ "$START_NOW" == "y" ]; then
-        exec "$SCRIPT_DIR/start.sh"
-    fi
 else
     echo ""
     echo "Warning: StarMade.jar was not found after extraction."
