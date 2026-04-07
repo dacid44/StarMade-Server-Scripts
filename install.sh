@@ -250,6 +250,8 @@ SERVER_PORT=$SERVER_PORT
 EOF
     success ".env written"
 
+    chmod +x "$SCRIPT_DIR"/*.sh
+
     # Offer to download StarMade if it isn't already present
     if [ ! -f "$STARMADE_DIR/StarMade.jar" ]; then
         echo ""
