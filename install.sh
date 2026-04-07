@@ -154,6 +154,13 @@ if [ "$SETUP_METHOD" == "1" ]; then
             info "Docker installed. You may need to log out and back in for group membership to take effect."
             info "Starting Docker service..."
             sudo systemctl enable --now docker
+        elif [[ "$(uname -s)" == "Darwin" ]] && command -v brew &>/dev/null; then
+            info "Docker not found — installing Docker Desktop via Homebrew..."
+            brew install --cask docker
+            info "Opening Docker Desktop — wait for it to finish starting before continuing."
+            open -a Docker
+            echo ""
+            read -rp "  Press Enter once Docker Desktop is running... "
         else
             error "Docker is not installed. Install Docker Desktop from https://www.docker.com/products/docker-desktop/ then re-run this installer."
         fi
