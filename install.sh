@@ -261,13 +261,15 @@ EOF
         fi
     fi
 
+    COMPOSE="$COMPOSE_CMD --project-directory $SCRIPT_DIR"
+
     echo ""
     read -rp "  Build and start the server now? (y/n): " START_NOW
     if [ "$START_NOW" == "y" ]; then
         info "Building Docker image (this may take a minute)..."
-        $COMPOSE_CMD -f "$SCRIPT_DIR/docker-compose.yml" build
+        $COMPOSE build
         info "Starting server..."
-        $COMPOSE_CMD -f "$SCRIPT_DIR/docker-compose.yml" up -d
+        $COMPOSE up -d
         success "Server started"
     fi
 
@@ -276,12 +278,12 @@ EOF
     echo "  Docker setup complete!"
     echo "=========================================="
     echo ""
-    echo "  Start:    docker compose up -d"
-    echo "  Stop:     docker compose down"
-    echo "  Logs:     docker compose logs -f"
-    echo "  Restart:  docker compose restart"
-    echo ""
-    info "If StarMade.jar is not yet in $STARMADE_DIR, place it there before starting."
+    echo "  Commands (run from anywhere):"
+    echo "    cd $SCRIPT_DIR"
+    echo "    docker compose up -d        # start"
+    echo "    docker compose down          # stop"
+    echo "    docker compose logs -f       # logs"
+    echo "    docker compose restart       # restart"
     echo ""
     exit 0
 
